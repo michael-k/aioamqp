@@ -197,6 +197,7 @@ class AmqpProtocol(asyncio.StreamReaderProtocol):
             We send `PROTOCOL_HEADER'
         """
 
+        logger.debug('start_connection')
         if login_method != 'AMQPLAIN':
             # TODO
             logger.warning('only AMQPLAIN login_method is supported, falling back to AMQPLAIN')
@@ -254,9 +255,11 @@ class AmqpProtocol(asyncio.StreamReaderProtocol):
                 frame.class_id == amqp_constants.CLASS_CONNECTION and
                 frame.method_id == amqp_constants.CONNECTION_CLOSE):
             raise exceptions.AmqpClosedConnection()
+        logger.debug('before ensure_future')
 
         # for now, we read server's responses asynchronously
         self.worker = ensure_future(self.run(), loop=self._loop)
+        logger.debug('/start_connection')
 
     @asyncio.coroutine
     def get_frame(self):
@@ -281,6 +284,10 @@ class AmqpProtocol(asyncio.StreamReaderProtocol):
         }
         if not frame:
             frame = yield from self.get_frame()
+
+        logger.debug("dispatch_frame type=%s class_id=%s method_id=%s", frame.frame_type,
+            frame.class_id if frame.frame_type == amqp_constants.TYPE_METHOD else '',
+            frame.method_id if frame.frame_type == amqp_constants.TYPE_METHOD else '')
 
         if frame.frame_type == amqp_constants.TYPE_HEARTBEAT:
             return
@@ -491,6 +498,7 @@ class AmqpProtocol(asyncio.StreamReaderProtocol):
     @asyncio.coroutine
     def open_ok(self, frame):
         self.state = OPEN
+        logger.debug("open_ok")# %s", frame)
         logger.info("Recv open ok")
 
     #

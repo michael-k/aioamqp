@@ -45,6 +45,7 @@ import socket
 import os
 from itertools import count
 from decimal import Decimal
+import logging
 
 from . import exceptions
 from . import constants as amqp_constants
@@ -52,6 +53,9 @@ from .properties import Properties
 
 
 DUMP_FRAMES = False
+
+
+logger = logging.getLogger(__name__)
 
 
 class AmqpEncoder:
@@ -372,6 +376,9 @@ class AmqpRequest:
             transmission.write(content_header)
         transmission.write(payload.getvalue())
         transmission.write(amqp_constants.FRAME_END)
+        logger.debug('write_frame type=%s class_id=%s method_id=%s', self.frame_type,
+            self.class_id if self.frame_type == amqp_constants.TYPE_METHOD else '',
+            self.method_id if self.frame_type == amqp_constants.TYPE_METHOD else '')
         return self.writer.write(transmission.getvalue())
 
 

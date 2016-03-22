@@ -2,6 +2,7 @@ import asyncio
 import socket
 import sys
 import ssl as ssl_module  # import as to enable argument named ssl in connect
+import logging
 from urllib.parse import urlparse
 
 from .exceptions import *  # pylint: disable=wildcard-import
@@ -9,6 +10,9 @@ from .protocol import AmqpProtocol
 
 from .version import __version__
 from .version import __packagename__
+
+
+logger = logging.getLogger(__name__)
 
 
 @asyncio.coroutine
@@ -34,6 +38,7 @@ def connect(host='localhost', port=None, login='guest', password='guest',
 
         Returns:        a tuple (transport, protocol) of an AmqpProtocol instance
     """
+    logger.debug('connect')
     if loop is None:
         loop = asyncio.get_event_loop()
     factory = lambda: protocol_factory(loop=loop, **kwargs)

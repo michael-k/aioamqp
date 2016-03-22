@@ -94,6 +94,7 @@ class RabbitTestCase(testing.AsyncioTestCaseMixin):
         self.reset_vhost()
 
     def reset_vhost(self):
+        logger.debug('reset_vhost')
         try:
             self.http_client.delete_vhost(self.vhost)
         except Exception:  # pylint: disable=broad-except
@@ -110,6 +111,7 @@ class RabbitTestCase(testing.AsyncioTestCaseMixin):
             channel = yield from self.create_channel(amqp=protocol)
             self.channels.append(channel)
         self.loop.run_until_complete(go())
+        logger.debug('/reset_vhost')
 
     def tearDown(self):
         @asyncio.coroutine

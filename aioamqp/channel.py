@@ -155,6 +155,7 @@ class Channel:
     @asyncio.coroutine
     def close(self, reply_code=0, reply_text="Normal Shutdown"):
         """Close the channel."""
+        logger.info('close')
         if not self.is_open:
             raise exceptions.ChannelClosed("channel already closed or closing")
         self.close_event.set()
