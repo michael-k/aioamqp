@@ -118,6 +118,7 @@ class AmqpProtocol(asyncio.StreamReaderProtocol):
         self.state = CLOSED
         self._close_channels(exception=exc)
         self._heartbeat_stop()
+        logger.warning("Connection lost2 exc=%r", exc)
         super().connection_lost(exc)
 
     def data_received(self, data):
@@ -327,6 +328,7 @@ class AmqpProtocol(asyncio.StreamReaderProtocol):
         if exception is None:
             exception = exceptions.ChannelClosed(reply_code, reply_text)
 
+        logger.warning('self._on_error_callback %s', self._on_error_callback)
         if self._on_error_callback:
             if asyncio.iscoroutinefunction(self._on_error_callback):
                 ensure_future(self._on_error_callback(exception), loop=self._loop)
