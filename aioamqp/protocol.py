@@ -241,6 +241,7 @@ class AmqpProtocol(asyncio.StreamReaderProtocol):
         self.server_frame_max = tune_ok['frame_max']
         self.server_channel_max = tune_ok['channel_max']
         self.server_heartbeat = tune_ok['heartbeat']
+        logger.warning('server_heartbeat=%s', self.server_heartbeat)
 
         if self.server_heartbeat > 0:
             self._heartbeat_timer_recv_reset()
@@ -359,6 +360,7 @@ class AmqpProtocol(asyncio.StreamReaderProtocol):
         the rest of the AmqpProtocol class.  This is kept around for backwards
         compatibility purposes only.
         """
+        print(self, 'old deprecated heartbeat coroutine')
         yield from self.stop_now
 
     @asyncio.coroutine
@@ -380,6 +382,7 @@ class AmqpProtocol(asyncio.StreamReaderProtocol):
         self._stream_writer.close()
 
     def _heartbeat_timer_recv_reset(self):
+        logger.warning('_heartbeat_timer_recv_reset hb=%s', self.server_heartbeat)
         if self.server_heartbeat is None:
             return
         if self._heartbeat_timer_recv is not None:
@@ -389,6 +392,7 @@ class AmqpProtocol(asyncio.StreamReaderProtocol):
             self._heartbeat_timer_recv_timeout)
 
     def _heartbeat_timer_send_reset(self):
+        logger.warning('_heartbeat_timer_send_reset hb=%s', self.server_heartbeat)
         if self.server_heartbeat is None:
             return
         if self._heartbeat_timer_send is not None:
