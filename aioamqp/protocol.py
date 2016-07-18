@@ -22,16 +22,19 @@ CONNECTING, OPEN, CLOSING, CLOSED = range(4)
 class _StreamWriter(asyncio.StreamWriter):
 
     def write(self, data):
+        logger.warning('write self=%r', self)
         ret = super().write(data)
         self._protocol._heartbeat_timer_send_reset()
         return ret
 
     def writelines(self, data):
+        logger.warning('writelines self=%r', self)
         ret = super().writelines(data)
         self._protocol._heartbeat_timer_send_reset()
         return ret
 
     def write_eof(self):
+        logger.warning('write_eof self=%r', self)
         ret = super().write_eof()
         self._protocol._heartbeat_timer_send_reset()
         return ret
