@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Aioamqp next
+------------
+
+ * Use proper Enum instead of int for protocol states.
+
 Aioamqp 0.9.0
 -------------
 

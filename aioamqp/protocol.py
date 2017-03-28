@@ -4,6 +4,7 @@
 
 import asyncio
 import logging
+import enum
 
 from . import channel as amqp_channel
 from . import constants as amqp_constants
@@ -16,7 +17,7 @@ from .compat import ensure_future
 logger = logging.getLogger(__name__)
 
 
-CONNECTING, OPEN, CLOSING, CLOSED = range(4)
+CONNECTING, OPEN, CLOSING, CLOSED = enum.Enum('AmqpProtocolState', 'CONNECTING OPEN CLOSING CLOSED')
 
 
 class _StreamWriter(asyncio.StreamWriter):
