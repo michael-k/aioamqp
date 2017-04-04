@@ -11,6 +11,10 @@ from . import testing
 from .. import exceptions
 from .. import properties
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 class QosTestCase(testcase.RabbitTestCase, unittest.TestCase):
 
@@ -206,6 +210,7 @@ class BasicDeliveryTestCase(testcase.RabbitTestCase, unittest.TestCase):
 
         @asyncio.coroutine
         def qcallback(channel, body, envelope, _properties):
+            logger.critical('aaaa %s %s %s %s', channel, body, envelope, _properties)
             nonlocal called
             if not called:
                 called = True
@@ -215,7 +220,9 @@ class BasicDeliveryTestCase(testcase.RabbitTestCase, unittest.TestCase):
                 qfuture.set_result(True)
 
         yield from self.channel.basic_consume(qcallback, queue_name=queue_name)
+        logger.critical('bbbb')
         yield from qfuture
+        logger.critical('cccc')
 
 
     @testing.coroutine
