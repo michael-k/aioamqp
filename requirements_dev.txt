@@ -3,4 +3,5 @@
 nose
 coverage
 pylint
+logilab-common
 -e git+https://github.com/bkjones/pyrabbit.git#egg=pyrabbit

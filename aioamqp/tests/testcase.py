@@ -20,6 +20,9 @@ from ..protocol import AmqpProtocol, OPEN
 
 
 logger = logging.getLogger(__name__)
+logging.basicConfig(level='DEBUG', format="%(levelname)s %(asctime)s %(name)s %(message)s")
+from logilab.common.logging_ext import set_color_formatter
+set_color_formatter(colors={'CRITICAL': 'cyan'})
 
 
 def use_full_name(f, arg_names):
