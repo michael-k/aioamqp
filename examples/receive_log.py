@@ -11,6 +11,14 @@ import aioamqp
 import random
 
 
+import logging
+logging.basicConfig(level='DEBUG', format="%(levelname)s %(asctime)s %(name)s %(message)s")
+from logilab.common.logging_ext import set_color_formatter
+set_color_formatter()
+
+def error_callback(exception):
+    print(exception)
+
 
 @asyncio.coroutine
 def callback(channel, body, envelope, properties):
@@ -20,7 +28,7 @@ def callback(channel, body, envelope, properties):
 @asyncio.coroutine
 def receive_log():
     try:
-        transport, protocol = yield from aioamqp.connect('localhost', 5672)
+        transport, protocol = yield from aioamqp.connect('localhost', 5672, on_error=error_callback)
     except aioamqp.AmqpClosedConnection:
         print("closed connections")
         return
