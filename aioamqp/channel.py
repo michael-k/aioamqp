@@ -46,7 +46,7 @@ class Channel:
     def _get_waiter(self, rpc_name):
         fut = self._futures.pop(rpc_name, None)
         if not fut:
-            raise exceptions.SynchronizationError("Call %s didn't set a waiter" % rpc_name)
+            raise exceptions.SynchronizationError("Call %s didn't set a waiter (%s)" % (rpc_name, self))
         return fut
 
     @property
@@ -155,7 +155,7 @@ class Channel:
     @asyncio.coroutine
     def close(self, reply_code=0, reply_text="Normal Shutdown"):
         """Close the channel."""
-        logger.info('close')
+        logger.info('close self=%s', self)
         if not self.is_open:
             raise exceptions.ChannelClosed("channel already closed or closing")
         self.close_event.set()

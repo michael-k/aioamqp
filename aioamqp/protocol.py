@@ -369,6 +369,7 @@ class AmqpProtocol(asyncio.StreamReaderProtocol):
         It can be an ack for the server or the client willing to check for the
         connexion timeout
         """
+        logger.warning('send_heartbeat')
         frame = amqp_frame.AmqpRequest(self._stream_writer, amqp_constants.TYPE_HEARTBEAT, 0)
         request = amqp_frame.AmqpEncoder()
         yield from self._write_frame(frame, request)
