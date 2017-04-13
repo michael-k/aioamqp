@@ -39,6 +39,7 @@ def coroutine(func):
         coro = asyncio.coroutine(func)
         timeout_ = getattr(func, '__timeout__', self.__timeout__)
         self.loop.run_until_complete(asyncio.wait_for(coro(self), timeout=timeout_, loop=self.loop))
+        import gc; gc.collect()
         if len(handler.messages) != 0:
             raise AsyncioErrors(handler.messages)
     return wrapper
