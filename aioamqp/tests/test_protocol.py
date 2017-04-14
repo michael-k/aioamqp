@@ -73,3 +73,4 @@ class ProtocolTestCase(testcase.RabbitTestCase, unittest.TestCase):
     def test_from_url_raises_on_wrong_scheme(self):
         with self.assertRaises(ValueError):
             yield from amqp_from_url('invalid://')
+        testcase.logger.debug("last statement from test")
