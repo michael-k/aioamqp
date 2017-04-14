@@ -126,7 +126,9 @@ class RabbitTestCase(testing.AsyncioTestCaseMixin):
                 logger.debug('Delete amqp %s', amqp)
                 yield from amqp.close()
                 del amqp
+        logger.debug('cccc')
         self.loop.run_until_complete(go())
+        logger.debug('dddd')
 
         try:
             self.http_client.delete_vhost(self.vhost)
