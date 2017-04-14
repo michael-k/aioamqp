@@ -42,6 +42,7 @@ class ProtocolTestCase(testcase.RabbitTestCase, unittest.TestCase):
     def test_connection_unexistant_vhost(self):
         with self.assertRaises(exceptions.AmqpClosedConnection):
             yield from amqp_connect(virtualhost='/unexistant', loop=self.loop)
+        import gc; gc.collect()
 
     def test_connection_wrong_login_password(self):
         with self.assertRaises(exceptions.AmqpClosedConnection):
