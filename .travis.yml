@@ -4,11 +4,14 @@ python:
 - 3.4
 - 3.5
 - 3.6
-- 3.7-dev
 services:
 - rabbitmq
 env:
 - PYTHONASYNCIODEBUG=1
+matrix:
+  include:
+    - { python: "3.7", dist: xenial, sudo: true }
+    - { python: "3.8-dev", dist: xenial, sudo: true }
 install:
 - pip install -r requirements_dev.txt
 - pip install --editable .
